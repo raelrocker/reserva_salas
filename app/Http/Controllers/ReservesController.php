@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Reserve;
 use App\Room;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
+use Mockery\CountValidator\Exception;
 
 class ReservesController extends Controller
 {
@@ -28,11 +31,12 @@ class ReservesController extends Controller
         $reserves = [];
         $free = [];
         $hours = [];
-        $hoursReserved = [];
+
         for ($i = 0; $i < 24; $i++) {
             $hours[$i] = $date . ' ' . str_pad($i, 2, '00', STR_PAD_LEFT) . ':00:00';
         }
         foreach ($rooms as $room) {
+            $hoursReserved = [];
             $reserve = Reserve::where([['room_id', '=', $room->id], ['datetime', 'like', $date . '%']])->get();
             $reserves[$room->id] = $reserve;
             $free[$room->id] = [];
@@ -66,7 +70,35 @@ class ReservesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $validator = Validator::make($input, Reserve::$rules, Reserve::$messages);
+
+        if ($validator->fails()) {
+            return Redirect::to('/home');
+        } else {
+            $reserve  = new Reserve();
+            $reserve->user_id = $input['user_id'];
+            $reserve->room_id = $input['room_id'];
+            $reserve->datetime = $input['datetime'];
+            $date = Carbon::parse($input['datetime']);
+            try {
+                $reserve->save();
+            } catch (QueryException $ex) {
+                $msg = '';
+                if ($ex->getMessage().contains('UN_RESERVES_USER_DATETIME')) {
+                    $msg = 'Você já reservou uma sala neste horário';
+                } else {
+                    $msg = 'Ocorreu um erro ao reservar a sala';
+                }
+                Session::flash('fail', $msg);
+                return Redirect::route('home', ['date' => $date->format('Y-m-d')]);
+            }
+
+            Session::flash('success', 'Reserva cadastrada com sucesso!');
+            return Redirect::route('home', ['date' => $date->format('Y-m-d')]);
+
+
+        }
     }
 
     /**
@@ -118,10 +150,10 @@ class ReservesController extends Controller
         if (!$reserve) {
             return Redirect::to('/home');
         }
-
+        $date = Carbon::parse($reserve->datetime);
         $reserve->delete();
         Session::flash('success', 'Reserva removida com sucesso!');
 
-        return Redirect::route('home', ['date' => '2017-06-04']);
+        return Redirect::route('home', ['date' => $date->format('Y-m-d')]);
     }
 }

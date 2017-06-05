@@ -87,10 +87,16 @@
                                     </td>
                                     <td>
                                         @foreach($free[$room->id] as $reserve)
-                                            <a href="#" class="btn btn-sm btn-default" style="margin-bottom: 2px" title="Reservar">
-                                                {{ $reserve }}
-                                                <span class="glyphicon glyphicon-star"></span>
-                                            </a>
+                                            <form action="{{ URL::route('reserves.store') }}" method="POST" style="display: inline-block">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                                <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                                <input type="hidden" name="datetime" value="{{ $date->format('Y-m-d') . ' ' . $reserve . ':00'  }}">
+                                                <button class="btn btn-sm btn-default" style="margin-bottom: 2px" title="Reservar">
+                                                    {{ $reserve }}
+                                                    <span class="glyphicon glyphicon-star"></span>
+                                                </button>
+                                            </form>
                                         @endforeach
                                     </td>
                                 </tr>
