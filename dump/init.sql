@@ -27,7 +27,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2017_06_04_192531_create_rooms_table',2);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2017_06_04_192531_create_rooms_table',2),(4,'2017_06_04_224929_create_reserves_table',3);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,6 +65,38 @@ LOCK TABLES `password_resets` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `reserves`
+--
+
+DROP TABLE IF EXISTS `reserves`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reserves` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `room_id` int(10) unsigned NOT NULL,
+  `datetime` datetime NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UN_RESERVES_USER_DATETIME` (`user_id`,`datetime`),
+  UNIQUE KEY `UN_RESERVES_ROOM_DATETIME` (`room_id`,`datetime`),
+  CONSTRAINT `reserves_room_id_foreign` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `reserves_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reserves`
+--
+
+LOCK TABLES `reserves` WRITE;
+/*!40000 ALTER TABLE `reserves` DISABLE KEYS */;
+INSERT INTO `reserves` VALUES (1,1,3,'2017-06-04 10:00:00','2017-01-01 02:00:00',NULL),(2,1,3,'2017-06-04 11:00:00','2017-01-01 02:00:00',NULL),(3,1,3,'2017-06-04 13:00:00','2017-01-01 02:00:00',NULL),(4,1,3,'2017-06-04 14:00:00','2017-06-04 16:00:00',NULL),(5,1,3,'2017-06-04 18:00:00','2017-06-04 16:00:00',NULL),(6,1,3,'2017-06-04 19:00:00','2017-06-04 16:00:00',NULL),(7,2,3,'2017-06-04 09:00:00','2017-06-04 12:00:00',NULL);
+/*!40000 ALTER TABLE `reserves` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `rooms`
 --
 
@@ -77,7 +109,7 @@ CREATE TABLE `rooms` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -86,6 +118,7 @@ CREATE TABLE `rooms` (
 
 LOCK TABLES `rooms` WRITE;
 /*!40000 ALTER TABLE `rooms` DISABLE KEYS */;
+INSERT INTO `rooms` VALUES (3,'sala 401','2017-06-04 23:39:46','2017-06-04 23:39:46'),(7,'Reuniões 2','2017-06-04 16:00:00',NULL);
 /*!40000 ALTER TABLE `rooms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,7 +139,7 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,7 +148,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Teste','novo@teste.com','$2y$10$5fA9KiykuIQ7Oru.A32Mx.RGcYlljbkgaYpNboELMWyxIm5PCuEtu','DCOPlEtwWYQMbPn5rUTcnRNwY9bWsK1U0o4q8bZFTBIYvicBGuF4R47kM9Lu','2017-06-04 22:17:38','2017-06-04 22:17:38');
+INSERT INTO `users` VALUES (1,'Teste','novo@teste.com','$2y$10$5fA9KiykuIQ7Oru.A32Mx.RGcYlljbkgaYpNboELMWyxIm5PCuEtu','pfmjFwPm45cRvU4aMv6Ly7LmFA4pqWSCa7ON5KCyrhelSNIzSQvjaD4vM5yh','2017-06-04 22:17:38','2017-06-04 22:17:38'),(2,'Israel','israel@email.com','$2y$10$fcMLoDPlQs4.sP1n8T24TuWGxglqNr29.s9B1CFHzs5DrRqKC97vO',NULL,'2017-06-05 01:57:59','2017-06-05 01:57:59');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -128,4 +161,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-04 16:32:09
+-- Dump completed on 2017-06-05  0:00:37

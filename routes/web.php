@@ -22,4 +22,4 @@ Route::post('/salas/cadastrar', 'RoomsController@store');
 Route::get('/salas/editar/{id?}', 'RoomsController@edit');
 Route::post('/salas/editar/{id?}', 'RoomsController@update');
 Route::delete('/salas/remover/{id?}', 'RoomsController@destroy')->name('rooms.destroy');
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home/{date?}', 'ReservesController@index')->name('home');
