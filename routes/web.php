@@ -25,3 +25,6 @@ Route::delete('/salas/remover/{id?}', 'RoomsController@destroy')->name('rooms.de
 Route::delete('/reservas/remover/{id?}', 'ReservesController@destroy')->name('reserves.destroy');
 Route::post('/reservas/reservar', 'ReservesController@store')->name('reserves.store');
 Route::get('/home/{date?}', 'ReservesController@index')->name('home');
+Route::get('/usuarios/editar', 'UsersController@edit')->name('users.edit');
+Route::post('/usuarios/editar', 'UsersController@update')->name('users.update');
+Route::post('/usuarios/destroy/{id?}', 'UsersController@destroy')->name('users.destroy');
