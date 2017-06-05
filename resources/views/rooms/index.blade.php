@@ -10,11 +10,11 @@
                         <h2>{{ Session::get('success') }}</h2>
                     </div>
                 @endif
-                    @if(Session::has('fail'))
-                        <div class="alert alert-danger" role="alert">
-                            <h2>{{ Session::get('fail') }}</h2>
-                        </div>
-                    @endif
+                @if(Session::has('fail'))
+                    <div class="alert alert-danger" role="alert">
+                        <h2>{{ Session::get('fail') }}</h2>
+                    </div>
+                @endif
                 <div class="panel panel-default">
                     <div class="panel-heading">Salas</div>
                     <div class="panel-body">

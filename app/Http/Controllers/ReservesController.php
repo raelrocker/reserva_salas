@@ -6,6 +6,8 @@ use App\Reserve;
 use App\Room;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
 class ReservesController extends Controller
@@ -107,8 +109,19 @@ class ReservesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id = 0)
     {
-        //
+        if ($id == 0)
+            return Redirect::to('/home');
+
+        $reserve = Reserve::find($id);
+        if (!$reserve) {
+            return Redirect::to('/home');
+        }
+
+        $reserve->delete();
+        Session::flash('success', 'Reserva removida com sucesso!');
+
+        return Redirect::route('home', ['date' => '2017-06-04']);
     }
 }
