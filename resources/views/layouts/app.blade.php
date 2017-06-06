@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/app.css" />
 </head>
 <body>
+    <?php if (!Auth::check()) { Redirect::to('/'); } ?>
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">

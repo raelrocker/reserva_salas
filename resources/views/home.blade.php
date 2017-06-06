@@ -72,7 +72,7 @@
                                                 <form action="{{ URL::route('reserves.destroy',$reserve->id) }}" method="POST" style="display: inline-block">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    <button class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza?')">
+                                                    <button class="btn btn-sm btn-danger" style="margin-bottom: 2px" onclick="return confirm('Tem certeza?')">
                                                         {{ $date->format('H'). ':00' }}
                                                         <span class="glyphicon glyphicon-remove"></span>
                                                     </button>

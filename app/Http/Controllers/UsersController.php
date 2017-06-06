@@ -59,4 +59,20 @@ class UsersController extends Controller
         }
 
     }
+
+    public function destroy($id = 0)
+    {
+        if ($id == 0)
+            return Redirect::to('/home');
+
+        $user = User::find($id);
+        if (!$user) {
+            Session::flash('fail', 'Usuário não encontrado!');
+            return Redirect::to('/home');
+        }
+
+        $user->delete();
+        Auth::logout();
+        return Redirect::to('/');
+    }
 }
