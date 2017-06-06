@@ -34,19 +34,22 @@
                                     onclick="location.href = '/home/' + getDate(document.getElementById('fecha').value)">Ir</button>
                         </div>
                         <div class="col-md-12">
+
                             <?php
                                 $date = \Carbon\Carbon::parse($date);
                             ?>
-                            <h3>{{ $date->format('d/m/Y') }}</h3>
+                            <h3>Data Selecionada: {{ $date->format('d/m/Y') }}</h3>
                         </div>
                         <div class="form-group col-md-12">
                             <br>
-                            <div>
+                            <div class="pull-right hidden-xs">
                                 Legenda:
                                 <span class="btn btn-sm btn-default">Livre</span>
                                 <span class="btn btn-sm btn-warning">Reservados</span>
                                 <span class="btn btn-sm btn-danger">Reservados por você</span>
                             </div>
+
+                            <strong class="text-muted">Clique no horário reservar ou remover reserva</strong>
                         </div>
 
                     <div class="table-responsive col-md-12">

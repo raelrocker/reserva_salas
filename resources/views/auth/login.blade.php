@@ -54,9 +54,7 @@
                                     Login
                                 </button>
 
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Esqueceu a senha?
-                                </a>
+
                             </div>
                         </div>
                     </form>
